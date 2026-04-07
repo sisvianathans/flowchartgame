@@ -1,0 +1,441 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --nb:#0D0609;--burg:#5C1A2E;--carm:#C4455E;--rose:#B5677E;--blush:#DBA8B4;--cream:#FAF5F2;
+}
+body{background:var(--nb);}
+#root{
+  background:var(--nb);
+  color:var(--cream);
+  font-family:'Calibri','Segoe UI',sans-serif;
+  min-height:700px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── TITLE SCREEN ── */
+#title-screen{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:700px;padding:40px 28px;text-align:center;gap:14px;
+}
+.mag-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--carm);border-bottom:.5px solid var(--carm);padding-bottom:6px;width:200px;text-align:center;}
+.big-title{font-family:'Playfair Display',Georgia,serif;font-size:52px;font-weight:900;line-height:1;color:var(--cream);}
+.big-title em{color:var(--carm);font-style:normal;}
+.sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blush);margin-top:4px;}
+.hr{width:60px;height:1px;background:var(--carm);margin:6px auto;}
+.intro-copy{font-size:13px;color:var(--blush);max-width:340px;line-height:1.8;font-style:italic;}
+.btn-play{
+  margin-top:12px;background:var(--carm);color:var(--cream);
+  border:none;padding:14px 48px;
+  font-family:'Playfair Display',Georgia,serif;font-size:16px;
+  cursor:pointer;letter-spacing:.5px;transition:background .2s;
+}
+.btn-play:hover{background:var(--burg);}
+.byline{font-size:10px;color:var(--rose);letter-spacing:1px;margin-top:6px;}
+
+/* ── GAME SCREEN ── */
+#game-screen{display:none;flex-direction:column;align-items:center;min-height:700px;}
+
+.game-topbar{
+  width:100%;background:var(--burg);
+  border-bottom:2px solid var(--carm);
+  padding:12px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.game-mag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--blush);}
+.game-title-sm{font-family:'Playfair Display',Georgia,serif;font-size:18px;color:var(--cream);}
+.game-title-sm span{color:var(--carm);}
+.step-counter{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);}
+
+.scene-banner{
+  width:100%;background:var(--burg);
+  border-left:4px solid var(--carm);
+  padding:14px 24px;margin:0;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blush);font-style:italic;
+}
+
+.question-area{
+  width:100%;padding:24px 24px 8px;
+}
+.question-text{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:22px;color:var(--cream);line-height:1.3;
+}
+
+.arrow-label{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--rose);margin-top:16px;display:flex;align-items:center;gap:8px;
+}
+.arrow-label::after{content:'↓';font-size:14px;color:var(--carm);}
+
+.choices{
+  width:100%;padding:0 24px 24px;
+  display:flex;flex-direction:column;gap:10px;
+  margin-top:8px;
+}
+.choice-btn{
+  background:transparent;border:.5px solid var(--rose);
+  color:var(--cream);padding:14px 18px;
+  font-family:'Calibri',sans-serif;font-size:14px;
+  text-align:left;cursor:pointer;
+  transition:all .2s;line-height:1.45;
+  display:flex;align-items:flex-start;gap:14px;
+  position:relative;
+}
+.choice-btn:hover{background:var(--burg);border-color:var(--carm);}
+.choice-btn:hover .arrow-right{opacity:1;}
+.choice-letter{
+  font-family:'Playfair Display',Georgia,serif;
+  color:var(--carm);font-size:14px;font-weight:700;min-width:16px;
+}
+.arrow-right{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  color:var(--carm);font-size:18px;opacity:0;transition:opacity .2s;
+}
+
+.path-crumbs{
+  width:100%;padding:8px 24px;
+  display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+}
+.crumb{
+  font-size:10px;color:var(--rose);letter-spacing:.5px;
+  display:flex;align-items:center;gap:4px;
+}
+.crumb::after{content:'→';color:var(--burg);}
+.crumb:last-child::after{content:'';}
+.crumb-dot{width:5px;height:5px;border-radius:50%;background:var(--carm);}
+
+/* ── RESULT SCREEN ── */
+#result-screen{display:none;flex-direction:column;align-items:center;min-height:700px;}
+
+.result-hero{
+  width:100%;background:var(--burg);
+  padding:32px 28px 24px;text-align:center;
+  border-bottom:3px solid var(--carm);
+}
+.you-are{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--blush);margin-bottom:10px;}
+.result-icon{font-size:44px;margin-bottom:10px;line-height:1;}
+.result-name{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:38px;font-weight:900;color:var(--cream);line-height:1.1;
+}
+.result-name span{color:var(--carm);}
+.result-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-top:8px;}
+
+.result-body{width:100%;padding:24px 28px;display:flex;flex-direction:column;gap:16px;}
+.section-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--carm);margin-bottom:6px;}
+.result-para{font-size:14px;color:var(--blush);line-height:1.8;}
+.signals{display:flex;flex-direction:column;gap:8px;}
+.signal{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--cream);line-height:1.5;}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--carm);margin-top:7px;flex-shrink:0;}
+.quote-box{
+  background:var(--burg);border-left:3px solid var(--carm);
+  padding:16px 18px;font-size:14px;color:var(--cream);
+  font-style:italic;line-height:1.7;font-family:'Playfair Display',Georgia,serif;
+}
+
+.path-taken{width:100%;padding:0 28px 24px;}
+.path-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:8px;}
+.path-chip{
+  background:rgba(92,26,46,.5);border:.5px solid var(--rose);
+  color:var(--blush);font-size:10px;padding:3px 8px;letter-spacing:.5px;
+}
+.path-chip::after{content:' →';color:var(--carm);}
+.path-chip:last-child::after{content:'';}
+
+.btn-again{
+  margin:0 28px 32px;align-self:center;
+  background:transparent;border:.5px solid var(--rose);
+  color:var(--blush);padding:11px 32px;
+  font-family:'Calibri',sans-serif;font-size:13px;
+  cursor:pointer;letter-spacing:1px;transition:all .2s;
+}
+.btn-again:hover{border-color:var(--carm);color:var(--cream);}
+
+.divl{width:100%;height:.5px;background:var(--burg);}
+</style>
+
+<div id="root">
+
+<!-- TITLE -->
+<div id="title-screen">
+  <div class="mag-eyebrow">Red Velvet · Love & Identity</div>
+  <div class="big-title">Would<br>You <em>Leave?</em></div>
+  <div class="sub">Follow the arrows · Find yourself</div>
+  <div class="hr"></div>
+  <div class="intro-copy">A flowchart game about toxic love. Each choice leads you down a path — to a truth about who you become when love starts to hurt.</div>
+  <div class="hr"></div>
+  <button class="btn-play" onclick="startGame()">Follow the arrows ↓</button>
+  <div class="byline">Based on attachment theory · For entertainment & reflection</div>
+</div>
+
+<!-- GAME -->
+<div id="game-screen">
+  <div class="game-topbar">
+    <div class="game-mag">Red Velvet</div>
+    <div class="game-title-sm">Would You <span>Leave?</span></div>
+    <div class="step-counter" id="step-counter">Step 1 of 6</div>
+  </div>
+  <div class="scene-banner" id="scene-banner"></div>
+  <div class="question-area">
+    <div class="question-text" id="question-text"></div>
+    <div class="arrow-label">follow the arrow that feels true</div>
+  </div>
+  <div class="choices" id="choices"></div>
+  <div class="path-crumbs" id="path-crumbs"></div>
+</div>
+
+<!-- RESULT -->
+<div id="result-screen">
+  <div class="result-hero">
+    <div class="you-are">You are:</div>
+    <div class="result-icon" id="r-icon"></div>
+    <div class="result-name" id="r-name"></div>
+    <div class="result-tag" id="r-tag"></div>
+  </div>
+  <div class="result-body">
+    <div>
+      <div class="section-label">Who you are</div>
+      <div class="result-para" id="r-who"></div>
+    </div>
+    <div class="divl"></div>
+    <div>
+      <div class="section-label">What this reveals</div>
+      <div class="signals" id="r-signals"></div>
+    </div>
+    <div class="divl"></div>
+    <div>
+      <div class="section-label">Your truth</div>
+      <div class="quote-box" id="r-quote"></div>
+    </div>
+  </div>
+  <div class="path-taken">
+    <div class="section-label">Your path</div>
+    <div class="path-row" id="path-row"></div>
+  </div>
+  <button class="btn-again" onclick="restart()">↺ Take it again</button>
+</div>
+
+</div>
+
+<script>
+const tree = {
+  start: {
+    scene: "It's a Tuesday night. They cancel — again.",
+    q: "What do you actually do?",
+    choices: [
+      { text: "Say nothing. I don't want to fight.", next: "A" },
+      { text: "Tell them calmly — this pattern has to stop.", next: "B" },
+    ]
+  },
+  A: {
+    scene: "You swallow it. They don't even apologise.",
+    q: "A week later they do it again. Your gut says...",
+    choices: [
+      { text: "Maybe I'm expecting too much.", next: "A1" },
+      { text: "Something has to change.", next: "A2" },
+    ]
+  },
+  B: {
+    scene: "You speak up. They get defensive — twist it back on you.",
+    q: "When they make it your fault, you...",
+    choices: [
+      { text: "Start to wonder if they're right.", next: "B1" },
+      { text: "Hold your ground. You know what happened.", next: "B2" },
+    ]
+  },
+  A1: {
+    scene: "You apologise for being 'too sensitive.'",
+    q: "They go cold for three days after. You...",
+    choices: [
+      { text: "Text constantly trying to fix it.", next: "RESULT_ECHO" },
+      { text: "Give them space — but feel sick inside.", next: "RESULT_GHOST" },
+    ]
+  },
+  A2: {
+    scene: "You write them a message. Delete it. Write it again.",
+    q: "You finally send it. They read it and don't reply. You...",
+    choices: [
+      { text: "Spiral. Did I say it wrong?", next: "RESULT_GHOST" },
+      { text: "The silence is the answer. I see that now.", next: "RESULT_CLEAR" },
+    ]
+  },
+  B1: {
+    scene: "You apologise even though you started the conversation with a valid need.",
+    q: "Your friend says 'you've changed — you used to stand up for yourself.' You...",
+    choices: [
+      { text: "Brush it off. She doesn't understand our relationship.", next: "RESULT_ECHO" },
+      { text: "Feel something crack open. She's right.", next: "RESULT_WAKING" },
+    ]
+  },
+  B2: {
+    scene: "They call you difficult. Cold. Too much.",
+    q: "In your quietest moment, when you're honest with yourself...",
+    choices: [
+      { text: "I stay because the good times are real.", next: "RESULT_EMBER" },
+      { text: "I know this isn't love. I'm just scared to go.", next: "RESULT_WAKING" },
+    ]
+  },
+};
+
+const results = {
+  RESULT_ECHO: {
+    icon: "🔁",
+    name: "The <span>Echo</span>",
+    tag: "You've learned to make yourself smaller",
+    who: "You've absorbed so much of their reality that you've started mistaking their version of events for the truth. You reach, fix, and apologise — not because you're wrong, but because peace has become more important than honesty. You are not an echo. You just forgot the sound of your own voice.",
+    signals: [
+      "You apologise before you know what you did",
+      "Their moods set the temperature of your whole day",
+      "You've stopped telling friends the full story",
+    ],
+    quote: "\"The version of you that disappears to keep someone else comfortable — she deserves a life too.\""
+  },
+  RESULT_GHOST: {
+    icon: "🌫",
+    name: "The <span>Ghost</span> of Yourself",
+    tag: "Present in the relationship, fading inside",
+    who: "You show up. You try. But piece by piece, you've been leaving — not the relationship, but yourself. The anxiety isn't love. The silence isn't peace. You've been haunting your own life, waiting for them to change so you can finally exhale.",
+    signals: [
+      "You feel relieved when they're busy and can't text",
+      "You can't remember what you used to enjoy alone",
+      "You confuse anxiety and anticipation with love",
+    ],
+    quote: "\"You don't have to earn rest. You don't have to earn love. That's not what it's supposed to cost.\""
+  },
+  RESULT_CLEAR: {
+    icon: "✦",
+    name: "The <span>Clear-Eyed</span> One",
+    tag: "You see it. You're ready.",
+    who: "There's a quiet devastation in clarity — knowing something is broken and finally letting yourself know it. You've stopped performing hope. You're not cold; you're honest. The path forward won't be painless, but it's yours.",
+    signals: [
+      "You've started mentally preparing for life without them",
+      "The good memories don't change what the bad ones mean",
+      "You're not waiting for permission to leave",
+    ],
+    quote: "\"Grief is not failure. Leaving is not giving up. Sometimes the bravest thing you do is stop.\""
+  },
+  RESULT_WAKING: {
+    icon: "🌅",
+    name: "The <span>Waking</span> Heart",
+    tag: "Something in you just shifted",
+    who: "You've been half-asleep in this relationship — hoping the fog would lift, the person would return, the love would be enough. But something cracked open. An honest friend. A quiet moment. A truth you couldn't unfeel. You're not lost. You're waking up.",
+    signals: [
+      "You've started noticing how you feel rather than managing how they feel",
+      "The excuses you made for them are harder to say out loud",
+      "Part of you is already imagining what freedom feels like",
+    ],
+    quote: "\"It's okay that it took time. You were doing what you knew. Now you know more.\""
+  },
+  RESULT_EMBER: {
+    icon: "🕯",
+    name: "The <span>Ember</span>",
+    tag: "Still holding warmth. Still holding on.",
+    who: "The love is real. You know it. That's what makes it so hard. You're not blind — you see the harm — but you're also holding memories of who they were, or could be, and it keeps you warm enough to stay. The question is: how long can you live by ember light when you deserve a fire?",
+    signals: [
+      "You fall in love with their potential, not their pattern",
+      "Good days feel like proof. Bad days feel like your fault.",
+      "You've left in your head many times — just not in real life",
+    ],
+    quote: "\"You can love someone completely and still know that staying is costing you something you can't afford.\""
+  },
+};
+
+let history = [];
+let pathLabels = [];
+let currentNode = 'start';
+
+function startGame() {
+  history = [];
+  pathLabels = [];
+  currentNode = 'start';
+  document.getElementById('title-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('game-screen').style.display = 'flex';
+  renderNode('start');
+}
+
+function renderNode(id) {
+  currentNode = id;
+  const node = tree[id];
+  if (!node) return;
+
+  const stepNum = history.length + 1;
+  const totalSteps = 6;
+  document.getElementById('step-counter').textContent = `Step ${Math.min(stepNum, totalSteps)} of ${totalSteps}`;
+  document.getElementById('scene-banner').textContent = node.scene;
+  document.getElementById('question-text').textContent = node.q;
+
+  // Choices
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  node.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-letter">${letters[i]}</span><span>${c.text}</span><span class="arrow-right">→</span>`;
+    btn.onclick = () => choose(c, id, c.text);
+    choicesEl.appendChild(btn);
+  });
+
+  // Crumbs
+  renderCrumbs();
+}
+
+function choose(choice, fromId, label) {
+  history.push(fromId);
+  pathLabels.push(label);
+  if (choice.next.startsWith('RESULT_')) {
+    showResult(choice.next);
+  } else {
+    renderNode(choice.next);
+  }
+}
+
+function renderCrumbs() {
+  const el = document.getElementById('path-crumbs');
+  el.innerHTML = '';
+  if (history.length === 0) return;
+  history.forEach((_, i) => {
+    const c = document.createElement('div');
+    c.className = 'crumb';
+    c.innerHTML = `<div class="crumb-dot"></div>${pathLabels[i].substring(0,30)}${pathLabels[i].length>30?'…':''}`;
+    el.appendChild(c);
+  });
+}
+
+function showResult(id) {
+  document.getElementById('game-screen').style.display = 'none';
+  const r = results[id];
+  document.getElementById('r-icon').textContent = r.icon;
+  document.getElementById('r-name').innerHTML = r.name;
+  document.getElementById('r-tag').textContent = r.tag;
+  document.getElementById('r-who').textContent = r.who;
+
+  const sig = document.getElementById('r-signals');
+  sig.innerHTML = '';
+  r.signals.forEach(s => {
+    sig.innerHTML += `<div class="signal"><div class="sdot"></div><span>${s}</span></div>`;
+  });
+
+  document.getElementById('r-quote').textContent = r.quote;
+
+  const pathRow = document.getElementById('path-row');
+  pathRow.innerHTML = '';
+  pathLabels.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'path-chip';
+    chip.textContent = p.length > 28 ? p.substring(0,28)+'…' : p;
+    pathRow.appendChild(chip);
+  });
+
+  document.getElementById('result-screen').style.display = 'flex';
+}
+
+function restart() {
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('title-screen').style.display = 'flex';
+}
+</script>
